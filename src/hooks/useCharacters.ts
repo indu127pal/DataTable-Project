@@ -15,8 +15,10 @@ export default function useCharacters(viewedIds: Record<string, boolean> | undef
   useEffect(() => {
     let mounted = true;
     setLoading(true);
-    const API_BASE = import.meta.env.VITE_API_URL || '/api';
-    axios.get<Character[]>(`${API_BASE}/characters`)
+    const rawAPI = (import.meta.env.VITE_API_URL as string) || '/api';
+    const API_BASE = rawAPI.replace(/\/$/, '');
+    const API_CHARACTERS = API_BASE.endsWith('/characters') ? API_BASE : `${API_BASE}/characters`;
+    axios.get<Character[]>(API_CHARACTERS)
       .then(res => {
         if (!mounted) return;
         setRows((res.data || []).map(r => ({ ...r, viewed: !!viewedIds?.[r.id] })));

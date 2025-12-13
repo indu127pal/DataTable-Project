@@ -75,16 +75,25 @@ A live demo of the project is available at: [Vercel Deployment Link](https://you
 
 ## Production API (vercel)
 
-After deploying to Vercel using the included `api/server.js` handler, your `json-server` is available at `/api`. Example endpoints:
+After deploying to Vercel using the included `api/server.js` handler, your `json-server` is available at `/api`.
 
-- List characters (first page): `/api/characters?_page=1&_limit=25`
-- Search by text: `/api/characters?q=naruto`
-- Filter by `health`: `/api/characters?health=Healthy&health=Injured`
+- Example endpoints:
+  - List characters (first page): `/api/characters?_page=1&_limit=25`
+  - Search by text: `/api/characters?q=naruto`
+  - Filter by `health`: `/api/characters?health=Healthy&health=Injured`
+
+The app constructs the characters endpoint from `VITE_API_URL` if set, otherwise it falls back to `/api/characters`.
+
+- To configure your production API base in Vercel, set an Environment Variable `VITE_API_URL` to the API base (not the characters path). Example:
+
+  - `VITE_API_URL=https://data-table-project-six.vercel.app/api`
+
+If you set `VITE_API_URL` to a full endpoint that already ends with `/characters` it will still be used correctly.
 
 You can test the API from your browser or using `curl`:
 
 ```bash
-curl 'https://<your-vercel-project>.vercel.app/api/characters?_page=1&_limit=25'
+curl 'https://data-table-project-six.vercel.app/api/characters?_page=1&_limit=25'
 ```
 
 ## Notes on server-side DataGrid
