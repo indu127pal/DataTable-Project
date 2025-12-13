@@ -15,13 +15,19 @@ This project includes:
 npm install
 ```
 
-2. Generate sample DB and start json-server (API: http://localhost:4000)
+2. Optional: Create a `.env` from `.env.example` for local overrides
+```bash
+cp .env.example .env
+# optionally edit .env and set VITE_API_URL if you run json-server on a custom port
+```
+
+3. Generate sample DB and start json-server (API: http://localhost:4000)
 ```bash
 npm run generate-db
 npm run json-server
 ```
 
-3. Run the dev server (Vite)
+4. Run the dev server (Vite)
 ```bash
 npm run dev
 # open http://localhost:3000
@@ -67,10 +73,24 @@ If you want to use a custom backend:
 
 A live demo of the project is available at: [Vercel Deployment Link](https://your-vercel-deployment-url.vercel.app)
 
+## Production API (vercel)
+
+After deploying to Vercel using the included `api/server.js` handler, your `json-server` is available at `/api`. Example endpoints:
+
+- List characters (first page): `/api/characters?_page=1&_limit=25`
+- Search by text: `/api/characters?q=naruto`
+- Filter by `health`: `/api/characters?health=Healthy&health=Injured`
+
+You can test the API from your browser or using `curl`:
+
+```bash
+curl 'https://<your-vercel-project>.vercel.app/api/characters?_page=1&_limit=25'
+```
+
 ## Notes on server-side DataGrid
 
 - The DataTable component builds requests to `${VITE_API_URL}/characters` when `VITE_API_URL` is set, otherwise it defaults to `/api/characters`.
-  - For local development, set `VITE_API_URL=http://localhost:4000` (or run `npm run json-server` and leave this unset to use `/api/` proxied during dev).
+  - For local development, set `VITE_API_URL=http://localhost:4000` (or run `npm run json-server` and leave this unset to use `/api/` proxied to `http://localhost:4000` via Vite config).
   - In production (when deployed on Vercel), the `json-server` is available as a serverless function at `/api` (requests go to `/api/characters`).
 - Query params supported:
   - `_page` (1-based), `_limit`
