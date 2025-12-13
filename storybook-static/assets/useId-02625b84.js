@@ -1,0 +1,1 @@
+import{r as n,a as f}from"./index-fcd6345f.js";const o=typeof window<"u"?n.useLayoutEffect:n.useEffect,E=o;let s=0;function d(e){const[t,a]=n.useState(e),c=e||t;return n.useEffect(()=>{t==null&&(s+=1,a(`mui-${s}`))},[t]),c}const l={...f},u=l.useId;function I(e){if(u!==void 0){const t=u();return e??t}return d(e)}export{E as a,I as u};
