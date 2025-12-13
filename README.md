@@ -1,4 +1,4 @@
-# DopeSecurity FE - Final (Vite + MUI + DataGrid + Storybook + Vitest)
+# DataTable FE - Final (Vite + MUI + DataGrid + Storybook + Vitest)
 
 This project includes:
 - Vite + React + TypeScript
