@@ -25,7 +25,6 @@ export default function DataTable() {
   const healthFilter = tableState.healthFilter;
   const [selection, setSelection] = useState<GridRowSelectionModel>({ type: 'include', ids: new Set() });
   const selectionCount = useMemo(() => (selection?.ids ? selection.ids.size : 0), [selection]);
-  const [density, setDensity] = useState<'comfortable'|'standard'|'compact'>('comfortable');
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 25 });
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -92,7 +91,6 @@ export default function DataTable() {
     else dispatch(markUnviewed(allIds));
   };
   const resetPagination = () => setPaginationModel({ page: 0, pageSize: 25 });
-  const resetDensity = () => setDensity('comfortable');
   const clearSelection = () => setSelection({ type: 'include', ids: new Set() });
   return (
     <Box sx={{ height: '100%', width: "100%", display: 'grid', gridTemplateRows: 'auto 1fr auto', position: 'relative', minHeight: 0 }}>
@@ -110,27 +108,22 @@ export default function DataTable() {
           onMarkUnviewed={() => handleMark(false)}
           clearViewed={() => dispatch(clearViewed())}
           resetPagination={() => resetPagination()}
-          resetDensity={() => resetDensity()}
           clearSelection={() => clearSelection()}
-          density={density}
-          setDensity={(d) => setDensity(d)}
         />
 
       </div>
-      <div style={{ minHeight: 0 }} data-density={density} data-page={paginationModel.page}>
+      <div style={{ minHeight: 0 }} data-page={paginationModel.page}>
         <motion.div animate={{ boxShadow: selectionCount > 0 ? '0 12px 36px rgba(99,102,241,0.12)' : 'transparent', scale: selectionCount > 0 ? 1.003 : 1 }} transition={{ type: 'spring', duration: 0.25 }} style={{ height: '100%', minHeight: 0 }}>
       <DataGrid
         rows={displayedRows}
         columns={columns}
           style={{ height: '100%' }}
-        density={density}
         pagination
         paginationModel={paginationModel}
         onPaginationModelChange={(p) => setPaginationModel(p)}
         checkboxSelection
         onRowSelectionModelChange={(newSel: GridRowSelectionModel) => setSelection(newSel)}
         rowSelectionModel={selection}
-        density="comfortable"
         aria-label="Characters table"
         loading={loading}
         getRowClassName={(params) => {

@@ -42,11 +42,10 @@ export const Shell: Story = {
           onMarkUnviewed={() => {}}
           clearViewed={() => {}}
           resetPagination={() => {}}
-          resetDensity={() => {}}
           clearSelection={() => {}}
         />
         <Box sx={{ height: '100%' }}>
-          <DataGrid rows={sampleRows} columns={columns} checkboxSelection density="comfortable" onRowSelectionModelChange={(s: any) => setSelectionCount((s?.ids?.size ?? s?.length ?? 0))} />
+          <DataGrid rows={sampleRows} columns={columns} checkboxSelection onRowSelectionModelChange={(s: any) => setSelectionCount((s?.ids?.size ?? s?.length ?? 0))} />
         </Box>
         <DataTableFooter results={sampleRows.length} selected={selectionCount} height={56} />
       </Box>
