@@ -58,18 +58,27 @@ This project is configured for deployment on **Vercel**. To deploy:
 2. Connect the GitHub repository to your Vercel account.
 3. Vercel will automatically build and deploy the project.
 
+If you want to use a custom backend:
+
+- Add a `VITE_API_URL` environment variable in Vercel's Project Settings (Environment Variables) and set it to the API base URL (e.g., `https://your-custom-api.com`).
+- If using the built-in `json-server` in `api/server.js`, no `VITE_API_URL` is required and the frontend can call `/api/characters` directly.
+
 ## Live Demo
 
 A live demo of the project is available at: [Vercel Deployment Link](https://your-vercel-deployment-url.vercel.app)
 
 ## Notes on server-side DataGrid
 
-- The DataTable component builds requests to `http://localhost:4000/characters` with query params:
+- The DataTable component builds requests to `${VITE_API_URL}/characters` when `VITE_API_URL` is set, otherwise it defaults to `/api/characters`.
+  - For local development, set `VITE_API_URL=http://localhost:4000` (or run `npm run json-server` and leave this unset to use `/api/` proxied during dev).
+  - In production (when deployed on Vercel), the `json-server` is available as a serverless function at `/api` (requests go to `/api/characters`).
+- Query params supported:
   - `_page` (1-based), `_limit`
   - `_sort` and `_order`
   - `q` for full-text search
   - repeated `health` params for multi-select filter (e.g. `health=Healthy&health=Injured`)
-- json-server returns `x-total-count` header which the app uses for pagination.
+- `json-server` returns `x-total-count` header which the app uses for pagination.
+- The project includes a serverless handler at `api/server.js` and a `vercel.json` rewrite so `/api/*` is served by `json-server` in production.
 
 ## Files changed / important files
 

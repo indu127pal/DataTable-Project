@@ -15,7 +15,8 @@ export default function useCharacters(viewedIds: Record<string, boolean> | undef
   useEffect(() => {
     let mounted = true;
     setLoading(true);
-    axios.get<Character[]>('http://localhost:4000/characters')
+    const API_BASE = import.meta.env.VITE_API_URL || '/api';
+    axios.get<Character[]>(`${API_BASE}/characters`)
       .then(res => {
         if (!mounted) return;
         setRows((res.data || []).map(r => ({ ...r, viewed: !!viewedIds?.[r.id] })));
