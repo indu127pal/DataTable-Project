@@ -18,7 +18,6 @@ npm install
 2. Optional: Create a `.env` from `.env.example` for local overrides
 ```bash
 cp .env.example .env
-# optionally edit .env and set VITE_API_URL if you run json-server on a custom port
 ```
 
 3. Generate sample DB and start json-server (API: http://localhost:4000)
@@ -60,18 +59,76 @@ npm test
 
 This project is configured for deployment on **Vercel**. To deploy:
 
-1. Push the repository to GitHub.
-2. Connect the GitHub repository to your Vercel account.
-3. Vercel will automatically build and deploy the project.
+1. Push the repository to GitHub (done).
+2. Import the repo into Vercel (New Project → Import Git Repository).
+3. Vercel will detect a Vite project, install dependencies and build. If you use the included serverless `json-server` endpoint, ensure `json-server` is listed in `dependencies` (done).
 
-If you want to use a custom backend:
+Environment variables (Production):
 
-- Add a `VITE_API_URL` environment variable in Vercel's Project Settings (Environment Variables) and set it to the API base URL (e.g., `https://your-custom-api.com`).
-- If using the built-in `json-server` in `api/server.js`, no `VITE_API_URL` is required and the frontend can call `/api/characters` directly.
+- `VITE_API_URL` — (optional) set to a custom API base if you use a remote backend. Example for this project when using the built-in serverless handler:
+
+  - `VITE_API_URL=https://<your-vercel-project>.vercel.app/api`
+
+Notes:
+- If `VITE_API_URL` is not set, the frontend defaults to calling `/api/characters` which will hit the included serverless `api/server.js` handler.
+- The serverless handler uses `api/db.json` as the data source. If the function logs "db.json not found" check that `api/db.json` is checked into Git (not in `.gitignore`).
+
+---
 
 ## Live Demo
 
-A live demo of the project is available at: [Vercel Deployment Link](https://your-vercel-deployment-url.vercel.app)
+A live demo of the project is available at:
+
+- Site: [https://data-table-project-git-main-indu127pals-projects.vercel.app](https://data-table-project-git-main-indu127pals-projects.vercel.app)
+- API: [https://data-table-project-git-main-indu127pals-projects.vercel.app/api/characters](https://data-table-project-git-main-indu127pals-projects.vercel.app/api/characters)
+
+
+---
+
+## Demo (screenshot + short video)
+
+You can showcase the app in the README by adding a short animated GIF (recommended) or a small MP4. Place the files in the `public/` folder and reference them from the README. Example of a placeholder image (replace this with your GIF/MP4):
+
+![Demo preview](./public/demo-placeholder.svg)
+
+Light and dark mode screenshots:
+
+![Light mode](./public/light-mode.png)
+
+![Dark mode](./public/dark-mode.png)
+
+Short demo video (place `demo-video.mov` or `demo.mp4` in `public/`):
+
+[Download demo video](./public/demo-video.mov)
+
+To embed an MP4 directly in the README (GitHub may not autoplay):
+
+<video controls loop muted playsinline width="640">
+  <source src="/demo.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+To add a short working video:
+
+- Record a 5-10s clip (QuickTime, OBS).
+- Convert to GIF to embed in the README (recommended for quick previews):
+  - Using ffmpeg:
+
+```bash
+# create a 5s clip
+ffmpeg -ss 00:00:02 -t 5 -i demo.mp4 -vf "fps=15,scale=640:-1:flags=lanczos" -loop 0 public/demo.gif
+```
+
+- Or keep an MP4 and host it in `public/demo.mp4`. Linking works; embedding may be browser-dependent:
+
+```html
+<video controls loop muted playsinline width="640">
+  <source src="/demo.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+```
+
+---
 
 ## Production API (vercel)
 
@@ -93,7 +150,7 @@ If you set `VITE_API_URL` to a full endpoint that already ends with `/characters
 You can test the API from your browser or using `curl`:
 
 ```bash
-curl 'https://data-table-project-six.vercel.app/api/characters?_page=1&_limit=25'
+curl 'https://data-table-project-git-main-indu127pals-projects.vercel.app/api/characters?_page=1&_limit=25'
 ```
 
 ## Notes on server-side DataGrid
